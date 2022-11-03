@@ -33,11 +33,13 @@ class Board:
     def getByX(self,x):
         self.board
 
+# Recursively solves the Sudoku problem
 def recursive_backtracking(board):
     if board.unassigned == 0:
         return True
     position = select_unassigned_tile(board)
     for value in order_domain_values(board, position):
+        assign_tile(board, position, value)
 
 
 # Return the position of the tile to be selected for assignment next
@@ -47,6 +49,11 @@ def select_unassigned_tile(board):
 # Return a list of the domain values to be used for
 def order_domain_values(board, position):
     return [1,2,3,4,5,6,7,8,9]
+
+# Returns a new board with the tile at the given position set to the given value.
+# The domains of various other variables are updated via forward checking.
+def assign_tile(board, position, value):
+    return None
 
 
 
