@@ -78,14 +78,18 @@ class Board:
 
 
 
-# Recursively solves the Sudoku problem
+# Recursively solves the Sudoku problem.
+# Returns a sovled board on success, None on failure.
 def recursive_backtracking(board):
     if board.unassigned == 0:
-        return True
+        return board
     position = select_unassigned_tile(board)
     for value in order_domain_values(board, position):
-        assign_tile(board, position, value)
-
+        new_board = assign_tile(board, position, value)
+        if new_board is not None:
+            return recursive_backtracking(new_board)
+        else:
+            return None
 
 # Return the position of the tile to be selected for assignment next
 def select_unassigned_tile(board):
@@ -97,6 +101,7 @@ def order_domain_values(board, position):
 
 # Returns a new board with the tile at the given position set to the given value.
 # The domains of various other variables are updated via forward checking.
+# If forward checking finds a dead end, None is returned
 def assign_tile(board, position, value):
     return None
 
