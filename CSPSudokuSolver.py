@@ -1,31 +1,42 @@
 
 class Tile:
-        def __init__(self,x,y,block,entry):
-            self.x = x
-            self.y = y
-            self.block = block
-            self.entry = entry
-            self.domain = {1,2,3,4,5,6,7,8,9}
-            if entry != None:
-                self.domain = {}
+    def __init__(self,x,y,block,entry):
+        self.x = x
+        self.y = y
+        self.block = block
+        self.entry = entry
+        self.domain = {1,2,3,4,5,6,7,8,9}
+        if entry != None:
+            self.domain = {}
             
-        def updateDomain(self, entry):
-            if self.entry == None:
-                self.domain.remove(entry)
+    def updateDomain(self, entry):
+        if self.entry == None:
+            self.domain.remove(entry)
             
-        def domainEmpty(self) -> bool:
-            if len(self.domain) or self.entry != None:
-                return False
-            return True
+    def domainEmpty(self) -> bool:
+        if len(self.domain) or self.entry != None:
+            return False
+        return True
+
+#Sudoku CSP:
+#   Variables: Each board tile
+#   Domain: 1-9
+#   Constraints: row, column, and block constraints
+#   Goal: Assign a value to each variable without violating constraints
+class Position:
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
 
 class Board:
     def __init__(self):
         # 9x9 board flattened
         self.size = 81
+        self.unassigned = self.size
 
         # none signifies empty space
         board = []
-        
+
         self.board = board
 
     def getByX(self, x) -> Tile.Array:
@@ -64,3 +75,30 @@ class Board:
             if x.domainEmpty() or y.domainEmpty() or b.domainEmpty():
                 return False
         return True
+
+
+
+# Recursively solves the Sudoku problem
+def recursive_backtracking(board):
+    if board.unassigned == 0:
+        return True
+    position = select_unassigned_tile(board)
+    for value in order_domain_values(board, position):
+        assign_tile(board, position, value)
+
+
+# Return the position of the tile to be selected for assignment next
+def select_unassigned_tile(board):
+    return Position(1, 1)
+
+# Return a list of the domain values to be used for
+def order_domain_values(board, position):
+    return [1,2,3,4,5,6,7,8,9]
+
+# Returns a new board with the tile at the given position set to the given value.
+# The domains of various other variables are updated via forward checking.
+def assign_tile(board, position, value):
+    return None
+
+
+
