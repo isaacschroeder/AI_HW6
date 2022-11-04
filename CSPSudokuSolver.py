@@ -177,9 +177,9 @@ class Board:
 def recursive_backtracking(board):
     if board.unassigned == 0:
         return board
-    position = select_unassigned_tile(board)
-    for value in order_domain_values(board, position):
-        new_board = assign_tile(board, position, value)
+    tile = select_unassigned_tile(board)
+    for value in order_domain_values(board, tile):
+        new_board = assign_tile(board, tile, value)
         if new_board is not None:
             return recursive_backtracking(new_board)
         else:
@@ -225,7 +225,7 @@ def order_domain_values(board, position):
 # Returns a new board with the tile at the given position set to the given value.
 # The domains of various other variables are updated via forward checking.
 # If forward checking finds a dead end, None is returned
-def assign_tile(board, position, value):
+def assign_tile(board, tile):
     return None
 
 def main():
