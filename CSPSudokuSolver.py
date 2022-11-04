@@ -1,3 +1,4 @@
+import typing
 
 def getBlockNum(i, j):
     if i <= 3:
@@ -50,6 +51,15 @@ class Tile:
             return False
         return True
 
+    def getPosition(self) -> typing.Tuple(int,int):
+        return (self.x, self.y)
+
+    def placeEntry(self) -> int:
+        nextValue = min(self.domain)
+        self.domain = {}
+        self.entry = nextValue
+        return nextValue
+
 #Sudoku CSP:
 #   Variables: Each board tile
 #   Domain: 1-9
@@ -79,22 +89,22 @@ class Board:
                 if startingState[i][j] != 'e':
                     tiles.append(Tile(i, j, self.getBlockNum(i, j), startingState[i][j]))
 
-    def getByX(self, x) -> Tile.Array:
+    def getByX(self, x) -> typing.List[Tile]:
         return [tile for tile in self.board if tile.x == x]
 
-    def getEntriesByX(self,x) -> int.Array:
+    def getEntriesByX(self,x) -> typing.List[int]:
         return [tile.entry for tile in self.board if tile.x == x]
 
-    def getByY(self, y) -> Tile.Array:
+    def getByY(self, y) -> typing.List[Tile]:
         return [tile for tile in self.board if tile.y == y]
 
-    def getEntriesByY(self,y) -> int.Array:
+    def getEntriesByY(self,y) -> typing.List[int]:
         return [tile.entry for tile in self.board if tile.y == y]
 
-    def getByBlock(self, block) -> Tile.Array:
+    def getByBlock(self, block) -> typing.List[Tile]:
         return [tile for tile in self.board if tile.block == block]
 
-    def getEntriesByBlock(self, block) -> int.Array:
+    def getEntriesByBlock(self, block) -> typing.List[int]:
         return [tile.entry for tile in self.board if tile.block == block]
 
     def isConflict(self,x,y,block,entry) -> bool:
@@ -108,7 +118,7 @@ class Board:
             return False
 
     def forwardCheck(self,x,y,block,entry) -> bool:
-        for x,y,b in self.getByX(x),self.getByY(y),self.getByBlock(block):
+        for (x,y,b) in zip(self.getByX(x),self.getByY(y),self.getByBlock(block)):
             x.updateDomain(entry)
             y.updateDomain(entry)
             b.updateDomain(entry)
