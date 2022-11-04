@@ -96,6 +96,7 @@ class Board:
                 row_string += " | "
             print(row_string)
             print("_____________________________________")
+        return ""
     
     def placeTiles(self, startingState):
         for i in range(9):
