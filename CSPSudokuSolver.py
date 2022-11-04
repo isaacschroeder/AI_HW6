@@ -51,7 +51,7 @@ class Tile:
             return False
         return True
 
-    def getPosition(self) -> typing.Tuple(int,int):
+    def getPosition(self) -> tuple[int,int]:
         return (self.x, self.y)
 
     def placeEntry(self) -> int:
@@ -82,7 +82,7 @@ class Board:
                 board.append(Tile(i+1, j+1, getBlockNum(i+1, j+1), None))
         # none signifies empty space
         self.board = board
-        self.board = self.placeTiles(startingState)
+        self.placeTiles(startingState)
 
     def printBoard(self):
         print("_____________________________________")
