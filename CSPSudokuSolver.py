@@ -21,7 +21,7 @@ def getBlockNum(i, j):
             return 8
         else:
             return 9
-            
+
 class Tile:
     def __init__(self,x,y,block,entry):
         self.x = x
@@ -57,35 +57,56 @@ class Board:
         self.size = 81
         self.unassigned = self.size
 
-        # none signifies empty space
         board = []
-        
-        self.board = board
-
-    
-    def createTiles(self, startingState):
-        tiles = []
         for i in range(9):
             for j in range(9):
-                if startingState[i][j] != 'e':
-                    tiles.append(Tile(i, j, self.getBlockNum(i, j), startingState[i][j]))
+                board.append(Tile(i+1, j+1, getBlockNum(i+1, j+1), None))
+        # none signifies empty space
+        self.board = board
+        self.board = self.placeTiles(startingState)
 
-    def getByX(self, x) -> Tile.Array:
+    def printBoard(self):
+        print("_____________________________________")
+        for i in range(9):
+            row_string = "| "
+            for entry in self.getEntriesByX(i+1):
+                value = " "
+                if entry != None:
+                    value = entry
+                row_string += value
+                row_string += " | "
+            print(row_string)
+            print("_____________________________________")
+    
+    def placeTiles(self, startingState):
+        for i in range(9):
+            j = 0
+            for tile in self.getByX(i+1):
+                block = getBlockNum(i+1,j+1)
+                if startingState[i][j] != 'e':
+                    tile.entry = startingState[i][j]
+                    self.forwardCheck(i, j, block, startingState[i][j])
+                else:
+                    tile.entry = None
+                    self.forwardCheck(i, j, block, None)
+                j += 1
+
+    def getByX(self, x):
         return [tile for tile in self.board if tile.x == x]
 
-    def getEntriesByX(self,x) -> int.Array:
+    def getEntriesByX(self,x):
         return [tile.entry for tile in self.board if tile.x == x]
 
-    def getByY(self, y) -> Tile.Array:
+    def getByY(self, y):
         return [tile for tile in self.board if tile.y == y]
 
-    def getEntriesByY(self,y) -> int.Array:
+    def getEntriesByY(self,y):
         return [tile.entry for tile in self.board if tile.y == y]
 
-    def getByBlock(self, block) -> Tile.Array:
+    def getByBlock(self, block):
         return [tile for tile in self.board if tile.block == block]
 
-    def getEntriesByBlock(self, block) -> int.Array:
+    def getEntriesByBlock(self, block):
         return [tile.entry for tile in self.board if tile.block == block]
 
     def isConflict(self,x,y,block,entry) -> bool:
@@ -149,6 +170,9 @@ def main():
         "ee9eee3ee"
     ]
 
+    puzzle = Board(startingState1)
+    puzzle.printBoard()
+
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
@@ -172,3 +196,4 @@ def main():
         "1e6e5ee7e"
     ]
 
+main()
