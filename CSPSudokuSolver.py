@@ -8,10 +8,19 @@ class Tile:
         self.domain = {1,2,3,4,5,6,7,8,9}
         if entry != None:
             self.domain = {}
-            
+
+    def __eq__(self, other) -> bool:
+        return self.x == other.x and self.y == other.y
+
+    def __gt__(self, other) -> bool:
+        if self.x == other.x:
+            return self.y < other.y
+        else:
+            return self.x < other.x
+
     def updateDomain(self, entry):
         if self.entry == None:
-            self.domain.remove(entry)
+            self.domain.discard(entry)
             
     def domainEmpty(self) -> bool:
         if len(self.domain) or self.entry != None:
@@ -76,8 +85,6 @@ class Board:
                 return False
         return True
 
-
-
 # Recursively solves the Sudoku problem
 def recursive_backtracking(board):
     if board.unassigned == 0:
@@ -85,7 +92,6 @@ def recursive_backtracking(board):
     position = select_unassigned_tile(board)
     for value in order_domain_values(board, position):
         assign_tile(board, position, value)
-
 
 # Return the position of the tile to be selected for assignment next
 def select_unassigned_tile(board):
