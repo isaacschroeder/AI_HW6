@@ -92,7 +92,7 @@ class Board:
                 value = " "
                 if entry != None:
                     value = entry
-                row_string += value
+                row_string += str(value)
                 row_string += " | "
             print(row_string)
             print("_____________________________________")
@@ -104,11 +104,11 @@ class Board:
             for tile in self.getByX(i+1):
                 block = getBlockNum(i+1,j+1)
                 if startingState[i][j] != 'e':
-                    tile.entry = startingState[i][j]
-                    self.forwardCheck(i, j, block, startingState[i][j])
+                    tile.entry = int(startingState[i][j])
+                    tile.domain = {}
+                    self.forwardCheck(i+1, j+1, block, int(startingState[i][j]))
                 else:
                     tile.entry = None
-                    self.forwardCheck(i, j, block, None)
                 j += 1
 
     def getByX(self, x) -> typing.List[Tile]:
@@ -192,7 +192,7 @@ def main():
 
     puzzle = Board(startingState1)
     print(puzzle)
-
+    print(puzzle.getByX(9)[8].domain)
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
