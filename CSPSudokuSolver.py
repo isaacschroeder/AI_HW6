@@ -51,7 +51,7 @@ class Tile:
             return False
         return True
 
-    def getPosition(self) -> typing.Tuple(int,int):
+    def getPosition(self) -> typing.Tuple[int,int]:
         return (self.x, self.y)
 
     def placeEntry(self) -> int:
@@ -84,7 +84,7 @@ class Board:
         self.board = board
         self.board = self.placeTiles(startingState)
 
-    def printBoard(self):
+    def __str__(self):
         print("_____________________________________")
         for i in range(9):
             row_string = "| "
@@ -190,7 +190,7 @@ def main():
     ]
 
     puzzle = Board(startingState1)
-    puzzle.printBoard()
+    print(puzzle)
 
     startingState2 = [
         "ee5e1eeee",
