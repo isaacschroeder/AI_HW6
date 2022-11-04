@@ -148,7 +148,29 @@ class Board:
                 return False
         return True
 
-
+    # Returns number of constraints that a given tile has on other unassigned variables.
+    # Essentially, this is the number of unassigned variables other than itself in its row, column and block.
+    def tileConstraintInvolvmentCount(self, tile_of_concern):
+        count = 0
+        # Check horizontal
+        row = self.getByX(tile_of_concern.x)
+        for tile in row:
+            # Ensure not counting the tile of concern itself
+            if tile is not tile_of_concern and tile.entry is None:
+                count += 1
+        # Check vertical
+        column = self.getByY(tile_of_concern.y)
+        for tile in column:
+            # Ensure not counting the tile of concern itself
+            if tile is not tile_of_concern and tile.entry is None:
+                count += 1
+        # Check block
+        block = self.getByBlock(tile_of_concern.block)
+        for tile in block:
+            # Ensure not counting the tile of concern itself
+            if tile is not tile_of_concern and tile.entry is None:
+                count += 1
+        return count
 
 # Recursively solves the Sudoku problem.
 # Returns a sovled board on success, None on failure.
@@ -163,13 +185,42 @@ def recursive_backtracking(board):
         else:
             return None
 
-# Return the position of the tile to be selected for assignment next
+
+# Return the position of the tile to be selected for assignment next.
+# Efficiently selects the next variable to be assigned based on minimum remaining values,
+# and breaks ties with the degree heuristic.
 def select_unassigned_tile(board):
-    return Position(1, 1)
+    # Get a list of all the unassigned tiles in the board.
+    unassigned = [tile for tile in board if tile.entry is None]
+    # Determine best tile choice(s) based on fewest remaining values
+    best_tile_choice_mrv = None
+    for tile in unassigned:
+        if best_tile_choice_mrv is None or len(tile.domain) < len(best_tile_choice_mrv.domain):
+            best_tile_choice_mrv = [tile]
+        elif len(tile.domain) == len(best_tile_choice_mrv.domain):
+            best_tile_choice_mrv.append(tile)
+    # Break tile ties with the degree heuristic
+    best_tile_choice_deg = None
+    best_degree_count = None
+    for tile in best_tile_choice_mrv:
+        tile_degree_count = board.tileConstraintInvolvmentCount(tile)
+        if best_tile_choice_deg is None or tile_degree_count < best_degree_count:
+            best_tile_choice_deg = [tile]
+            best_degree_count = board.tileConstraintInvolvmentCount(best_tile_choice_deg)
+        elif tile_degree_count == best_degree_count:
+            best_tile_choice_deg.append(tile)
+    # Break additional ties based on tile position (top left highest priority)
+    best_tile_choice = None
+    for tile in best_tile_choice_deg:
+        if best_tile_choice is None or tile < best_tile_choice:
+            best_tile_choice = tile
+    return best_tile_choice
+
 
 # Return a list of the domain values to be used for
 def order_domain_values(board, position):
     return [1,2,3,4,5,6,7,8,9]
+
 
 # Returns a new board with the tile at the given position set to the given value.
 # The domains of various other variables are updated via forward checking.
@@ -216,4 +267,6 @@ def main():
         "1e6e5ee7e"
     ]
 
+
+# Call to main
 main()
