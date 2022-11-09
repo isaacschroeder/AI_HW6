@@ -31,8 +31,6 @@ class Tile:
         self.block = block
         self.entry = entry
         self.domain = {1,2,3,4,5,6,7,8,9}
-        if entry != None:
-            self.domain = {}
 
     def __eq__(self, other) -> bool:
         return self.x == other.x and self.y == other.y
@@ -57,7 +55,6 @@ class Tile:
 
     def placeEntry(self) -> int:
         nextValue = min(self.domain)
-        self.domain = {}
         self.entry = nextValue
         return nextValue
 
