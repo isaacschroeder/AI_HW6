@@ -248,7 +248,7 @@ def main():
         "ee5e1eeee",
         "ee2ee4e3e",
         "1e9eee2e6",
-        "2eee33333",
+        "2eee3eeee",
         "e4eeee7ee",
         "5eeee7ee1",
         "eee6e3eee",
@@ -259,6 +259,7 @@ def main():
     startingState3 = [
         "67eeeeeee",
         "e25eeeeee",
+        "e9e56e2ee",
         "3eee8e9ee",
         "eeeeee8e1",
         "eee47eeee",
