@@ -1,4 +1,5 @@
 import typing
+import copy
 
 def getBlockNum(i, j):
     if i <= 3:
@@ -178,6 +179,12 @@ class Board:
                 count += 1
         return count
 
+    def assignValueAt(self, position, value):
+        tile = self.board.getTile(position)
+        tile.value = value
+        tile.domain = {}  # Domain should be empty now that it has been assigned
+
+
 # Recursively solves the Sudoku problem.
 # Returns a sovled board on success, None on failure.
 def recursive_backtracking(board):
@@ -185,7 +192,7 @@ def recursive_backtracking(board):
         return board
     tile = select_unassigned_tile(board)
     for value in order_domain_values(board, tile):
-        new_board = assign_tile(board, tile, value)
+        new_board = assign_tile(board, tile.getPosition(), value)
         if new_board is not None:
             return recursive_backtracking(new_board)
         else:
@@ -223,16 +230,21 @@ def select_unassigned_tile(board):
     return best_tile_choice
 
 
-# Return a list of the domain values to be used for
-def order_domain_values(board, position):
-    return [1,2,3,4,5,6,7,8,9]
+# Return a list of the domain values to be used for assigning
+def order_domain_values(board, tile):
+    return tile.domain
 
 
 # Returns a new board with the tile at the given position set to the given value.
 # The domains of various other variables are updated via forward checking.
 # If forward checking finds a dead end, None is returned
-def assign_tile(board, tile):
+def assign_tile(board, position, value):
+    new_board = copy.deepcopy(board)
+    new_board.assignValueAt(position, value)
+    if new_board.forwardCheck(position.row, position.col, getBlockNum(position.row, position.col), value):
+        return new_board
     return None
+
 
 def main():
     startingState1 = [
