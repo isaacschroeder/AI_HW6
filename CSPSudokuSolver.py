@@ -139,6 +139,12 @@ class Board:
         else:
             return False
 
+    def getTile(self,position) -> Tile:
+        query = [tile for tile in self.board if tile.x == position.row and tile.y == position.col]
+        if len(query) == 1:
+            return query[0]
+        return None
+
     def forwardCheck(self,x,y,block,entry) -> bool:
         for (x,y,b) in zip(self.getByX(x),self.getByY(y),self.getByBlock(block)):
             x.updateDomain(entry)
