@@ -42,8 +42,7 @@ class Tile:
             return self.x < other.x
 
     def updateDomain(self, entry):
-        if self.entry == None:
-            set(self.domain).discard(entry)
+        self.domain.discard(entry)
             
     def domainEmpty(self) -> bool:
         if len(self.domain) or self.entry != None:
@@ -148,6 +147,7 @@ class Board:
             x.updateDomain(entry)
             y.updateDomain(entry)
             b.updateDomain(entry)
+            print(x.domain)
             if x.domainEmpty() or y.domainEmpty() or b.domainEmpty():
                 return False
         return True
@@ -178,7 +178,7 @@ class Board:
 
     def assignValueAt(self, position, value):
         tile = self.getTile(position)
-        tile.value = value
+        tile.entry = value
         # tile.domain = {}  # Domain should be empty now that it has been assigned
 
 
@@ -191,6 +191,9 @@ def recursive_backtracking(board):
     for value in order_domain_values(board, tile):
         new_board = assign_tile(board, tile.getPosition(), value)
         if new_board is not None:
+            print(new_board)
+            print("Tile Domain: {}".format(tile.domain))
+            print("Assignment: {} at ({},{})".format(value, tile.getPosition().row, tile.getPosition().col))
             return recursive_backtracking(new_board)
         else:
             return None
