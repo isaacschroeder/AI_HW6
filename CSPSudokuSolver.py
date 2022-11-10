@@ -263,10 +263,6 @@ def main():
         "1ee32eeee",
         "ee9eee3ee"
     ]
-
-    puzzle1 = Board(startingState1)
-    print(recursive_backtracking(puzzle1, 0))
-
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
@@ -278,10 +274,6 @@ def main():
         "e6e1eeeee",
         "eeee7ee5e"
     ]
-
-    puzzle2 = Board(startingState2)
-    print(recursive_backtracking(puzzle2, 0))
-
     startingState3 = [
         "67eeeeeee",
         "e25eeeeee",
@@ -294,8 +286,35 @@ def main():
         "1e6e5ee7e"
     ]
 
-    puzzle3 = Board(startingState2)
-    print(recursive_backtracking(puzzle3, 0))
+    print("\nWelcome to the sudoku solver.")
+    while True:
+        print("\nChoose a starting state to run:")
+        print("  (A) 1")
+        print("  (B) 2")
+        print("  (C) 3")
+        print("  (D) Quit")
+        selection = input("Please enter a letter: ")
+
+        if (selection == 'A' or selection == 'a' or selection == '1'):
+            puzzle = Board(startingState1)
+            output = recursive_backtracking(puzzle, 0)
+            print("\n\nSolved Sudoku for Starting State 1:")
+            print(output)
+        elif (selection == 'B' or selection == 'b' or selection == '2'):
+            puzzle = Board(startingState2)
+            output = recursive_backtracking(puzzle, 0)
+            print("\n\nSolved Sudoku for Starting State 2:")
+            print(output)
+        elif (selection == 'C' or selection == 'c' or selection == '3'):
+            puzzle = Board(startingState3)
+            output = recursive_backtracking(puzzle, 0)
+            print("\n\nSolved Sudoku for Starting State 3:")
+            print(output)
+        elif (selection == 'D' or selection == 'd' or selection == 'Quit' or selection == 'quit'):
+            print('\nExiting program...\n')
+            break
+        else:
+            print("Invalid input: please enter a letter A-D (or a number 1-3).")
 
 
 # Call to main
