@@ -147,7 +147,6 @@ class Board:
             x.updateDomain(entry)
             y.updateDomain(entry)
             b.updateDomain(entry)
-            print(x.domain)
             if x.domainEmpty() or y.domainEmpty() or b.domainEmpty():
                 return False
         return True
@@ -188,6 +187,8 @@ def recursive_backtracking(board):
     if board.unassigned == 0:
         return board
     tile = select_unassigned_tile(board)
+    if tile is None:
+        return board
     for value in order_domain_values(board, tile):
         new_board = assign_tile(board, tile.getPosition(), value)
         if new_board is not None:
@@ -205,6 +206,8 @@ def recursive_backtracking(board):
 def select_unassigned_tile(board):
     # Get a list of all the unassigned tiles in the board.
     unassigned = [tile for tile in board.board if tile.entry is None]
+    if len(unassigned) == 0:
+        return None
     # Determine best tile choice(s) based on fewest remaining values
     best_tile_choice_mrv = None
     for tile in unassigned:
