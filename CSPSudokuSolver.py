@@ -238,6 +238,7 @@ def order_domain_values(board, tile):
 def assign_tile(board, position, value):
     new_board = copy.deepcopy(board)
     new_board.assignValueAt(position, value)
+    new_board.unassigned -= 1
     if new_board.forwardCheck(position.row, position.col, getBlockNum(position.row, position.col), value):
         return new_board
     return None
