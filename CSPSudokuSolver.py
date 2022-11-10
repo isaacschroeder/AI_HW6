@@ -1,6 +1,8 @@
 import typing
 import copy
+import time
 
+# getBlockNum() returns the block number (1-9) of the associated i and j coordinates
 def getBlockNum(i, j):
     if i <= 3:
         if j <= 3:
@@ -81,6 +83,7 @@ class Board:
         self.board = board
         self.placeTiles(startingState)
 
+    # this function is used to print out the current state of the sudoku board
     def __str__(self):
         print("_____________________________________")
         for i in range(9):
@@ -95,6 +98,8 @@ class Board:
             print("_____________________________________")
         return ""
     
+    # placeTiles is used to initialize the starting state into the current sudoku board, also updating the
+    # domains of each tile accordingly as new tiles are inserted
     def placeTiles(self, startingState):
         for i in range(9):
             j = 0
@@ -108,6 +113,7 @@ class Board:
                     tile.entry = None
                 j += 1
 
+    # the following functions are used to get a row, column, or tile from the board
     def getByX(self, x) -> typing.List[Tile]:
         return [tile for tile in self.board if tile.x == x]
 
@@ -254,6 +260,7 @@ def assign_tile(board, position, value):
 
 
 def main():
+    # these are the starting states the sudoku puzzles, using 'e' characters for empty tiles
     startingState1 = [
         "ee1ee2eee",
         "ee5ee6e3e",
@@ -288,6 +295,8 @@ def main():
         "1e6e5ee7e"
     ]
 
+
+    # a menu system is used to allow the user to select which sudoku starting state to solve from the 3 options
     print("\nWelcome to the sudoku solver.")
     while True:
         print("\nChoose a starting state to run:")
@@ -299,19 +308,28 @@ def main():
 
         if (selection == 'A' or selection == 'a' or selection == '1'):
             puzzle = Board(startingState1)
+            start = time.time()
             output = recursive_backtracking(puzzle, 0)
+            end = time.time()
             print("\n\nSolved Sudoku for Starting State 1:")
             print(output)
+            print('   Execution time => ' + str(end-start))
         elif (selection == 'B' or selection == 'b' or selection == '2'):
             puzzle = Board(startingState2)
+            start = time.time()
             output = recursive_backtracking(puzzle, 0)
+            end = time.time()
             print("\n\nSolved Sudoku for Starting State 2:")
             print(output)
+            print('   Execution time => ' + str(end-start))
         elif (selection == 'C' or selection == 'c' or selection == '3'):
             puzzle = Board(startingState3)
+            start = time.time()
             output = recursive_backtracking(puzzle, 0)
+            end = time.time()
             print("\n\nSolved Sudoku for Starting State 3:")
             print(output)
+            print('   Execution time => ' + str(end-start))
         elif (selection == 'D' or selection == 'd' or selection == 'Quit' or selection == 'quit'):
             print('\nExiting program...\n')
             break
