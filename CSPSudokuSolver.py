@@ -196,9 +196,11 @@ def recursive_backtracking(board, depth):
             print("Depth: {}".format(depth))
             print("Tile Domain: {}".format(tile.domain))
             print("Assignment: {} at ({},{})".format(value, tile.getPosition().row, tile.getPosition().col))
-            return recursive_backtracking(new_board, depth+1)
-        else:
-            return None
+            output = recursive_backtracking(new_board, depth+1) 
+            if output is not None:
+                return output
+
+    return None
 
 
 # Return the position of the tile to be selected for assignment next.
