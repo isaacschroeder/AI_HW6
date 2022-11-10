@@ -256,10 +256,9 @@ def main():
         "ee9eee3ee"
     ]
 
-    puzzle = Board(startingState1)
-    print(puzzle)
-    print(puzzle.getByX(9)[8].domain)
-    print(recursive_backtracking(puzzle))
+    puzzle1 = Board(startingState1)
+    print(recursive_backtracking(puzzle1))
+
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
