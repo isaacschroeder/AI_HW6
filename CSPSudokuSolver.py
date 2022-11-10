@@ -183,7 +183,7 @@ class Board:
 
 # Recursively solves the Sudoku problem.
 # Returns a sovled board on success, None on failure.
-def recursive_backtracking(board):
+def recursive_backtracking(board, depth):
     if board.unassigned == 0:
         return board
     tile = select_unassigned_tile(board)
@@ -193,9 +193,10 @@ def recursive_backtracking(board):
         new_board = assign_tile(board, tile.getPosition(), value)
         if new_board is not None:
             print(new_board)
+            print("Depth: {}".format(depth))
             print("Tile Domain: {}".format(tile.domain))
             print("Assignment: {} at ({},{})".format(value, tile.getPosition().row, tile.getPosition().col))
-            return recursive_backtracking(new_board)
+            return recursive_backtracking(new_board, depth+1)
         else:
             return None
 
@@ -264,7 +265,7 @@ def main():
     ]
 
     puzzle1 = Board(startingState1)
-    print(recursive_backtracking(puzzle1))
+    print(recursive_backtracking(puzzle1, 0))
 
     startingState2 = [
         "ee5e1eeee",
@@ -279,7 +280,7 @@ def main():
     ]
 
     puzzle2 = Board(startingState2)
-    print(recursive_backtracking(puzzle2))
+    print(recursive_backtracking(puzzle2, 0))
 
     startingState3 = [
         "67eeeeeee",
@@ -294,7 +295,7 @@ def main():
     ]
 
     puzzle3 = Board(startingState2)
-    print(recursive_backtracking(puzzle3))
+    print(recursive_backtracking(puzzle3, 0))
 
 
 # Call to main
