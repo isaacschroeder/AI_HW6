@@ -67,6 +67,8 @@ class Position:
         self.row = row
         self.col = col
 
+count = 0
+
 class Board:
     def __init__(self, startingState):
         # 9x9 board flattened
@@ -171,12 +173,16 @@ class Board:
         block = self.getByBlock(tile_of_concern.block)
         for tile in block:
             # Ensure not counting the tile of concern itself
-            if tile is not tile_of_concern and tile.entry is None:
+            if tile is not tile_of_concern and tile.entry is None and tile.x != tile_of_concern.x and tile.y != tile_of_concern.y:
                 count += 1
         return count
 
     def assignValueAt(self, position, value):
+        global count
         tile = self.getTile(position)
+        if count < 4:
+            print("Variable %d at %d,%d | Entry: %d | Domain size: %d | Degree: %d" % (count + 1, position.row, position.col, value, len(tile.domain), self.tileConstraintInvolvmentCount(tile)))
+            count +=1
         tile.entry = value
         # tile.domain = {}  # Domain should be empty now that it has been assigned
 
@@ -192,10 +198,10 @@ def recursive_backtracking(board, depth):
     for value in order_domain_values(board, tile):
         new_board = assign_tile(board, tile.getPosition(), value)
         if new_board is not None:
-            print(new_board)
-            print("Depth: {}".format(depth))
-            print("Tile Domain: {}".format(tile.domain))
-            print("Assignment: {} at ({},{})".format(value, tile.getPosition().row, tile.getPosition().col))
+            # print(new_board)
+            # print("Depth: {}".format(depth))
+            # print("Tile Domain: {}".format(tile.domain))
+            # print("Assignment: {} at ({},{})".format(value, tile.getPosition().row, tile.getPosition().col))
             output = recursive_backtracking(new_board, depth+1) 
             if output is not None:
                 return output
@@ -296,7 +302,9 @@ def main():
         print("  (C) 3")
         print("  (D) Quit")
         selection = input("Please enter a letter: ")
-
+        global count
+        count = 0
+        
         if (selection == 'A' or selection == 'a' or selection == '1'):
             puzzle = Board(startingState1)
             output = recursive_backtracking(puzzle, 0)
