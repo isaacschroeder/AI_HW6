@@ -43,7 +43,7 @@ class Tile:
 
     def updateDomain(self, entry):
         if self.entry == None:
-            self.domain.discard(entry)
+            set(self.domain).discard(entry)
             
     def domainEmpty(self) -> bool:
         if len(self.domain) or self.entry != None:
@@ -51,7 +51,7 @@ class Tile:
         return True
 
     def getPosition(self) -> tuple[int,int]:
-        return (self.x, self.y)
+        return Position(self.x, self.y)
 
     def placeEntry(self) -> int:
         nextValue = min(self.domain)
@@ -103,7 +103,7 @@ class Board:
                 block = getBlockNum(i+1,j+1)
                 if startingState[i][j] != 'e':
                     tile.entry = int(startingState[i][j])
-                    tile.domain = {}
+                    # tile.domain = {}
                     self.forwardCheck(i+1, j+1, block, int(startingState[i][j]))
                 else:
                     tile.entry = None
@@ -177,7 +177,7 @@ class Board:
         return count
 
     def assignValueAt(self, position, value):
-        tile = self.board.getTile(position)
+        tile = self.getTile(position)
         tile.value = value
         tile.domain = {}  # Domain should be empty now that it has been assigned
 
@@ -201,13 +201,13 @@ def recursive_backtracking(board):
 # and breaks ties with the degree heuristic.
 def select_unassigned_tile(board):
     # Get a list of all the unassigned tiles in the board.
-    unassigned = [tile for tile in board if tile.entry is None]
+    unassigned = [tile for tile in board.board if tile.entry is None]
     # Determine best tile choice(s) based on fewest remaining values
     best_tile_choice_mrv = None
     for tile in unassigned:
-        if best_tile_choice_mrv is None or len(tile.domain) < len(best_tile_choice_mrv.domain):
+        if best_tile_choice_mrv is None or len(tile.domain) < len(best_tile_choice_mrv[0].domain):
             best_tile_choice_mrv = [tile]
-        elif len(tile.domain) == len(best_tile_choice_mrv.domain):
+        elif len(tile.domain) == len(best_tile_choice_mrv[0].domain):
             best_tile_choice_mrv.append(tile)
     # Break tile ties with the degree heuristic
     best_tile_choice_deg = None
@@ -216,7 +216,7 @@ def select_unassigned_tile(board):
         tile_degree_count = board.tileConstraintInvolvmentCount(tile)
         if best_tile_choice_deg is None or tile_degree_count < best_degree_count:
             best_tile_choice_deg = [tile]
-            best_degree_count = board.tileConstraintInvolvmentCount(best_tile_choice_deg)
+            best_degree_count = board.tileConstraintInvolvmentCount(best_tile_choice_deg[0])
         elif tile_degree_count == best_degree_count:
             best_tile_choice_deg.append(tile)
     # Break additional ties based on tile position (top left highest priority)
@@ -259,6 +259,7 @@ def main():
     puzzle = Board(startingState1)
     print(puzzle)
     print(puzzle.getByX(9)[8].domain)
+    print(recursive_backtracking(puzzle))
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
