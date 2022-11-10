@@ -50,8 +50,8 @@ class Tile:
             return False
         return True
 
-    def getPosition(self) -> tuple[int,int]:
-        return Position(self.x, self.y)
+    def getPosition(self): # -> tuple[int,int]:
+        return (self.x, self.y)
 
     def placeEntry(self) -> int:
         nextValue = min(self.domain)
@@ -179,7 +179,7 @@ class Board:
     def assignValueAt(self, position, value):
         tile = self.getTile(position)
         tile.value = value
-        tile.domain = {}  # Domain should be empty now that it has been assigned
+        # tile.domain = {}  # Domain should be empty now that it has been assigned
 
 
 # Recursively solves the Sudoku problem.
