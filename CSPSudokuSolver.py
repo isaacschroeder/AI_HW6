@@ -201,7 +201,7 @@ def recursive_backtracking(board):
 # and breaks ties with the degree heuristic.
 def select_unassigned_tile(board):
     # Get a list of all the unassigned tiles in the board.
-    unassigned = [tile for tile in board if tile.entry is None]
+    unassigned = [tile for tile in board.board if tile.entry is None]
     # Determine best tile choice(s) based on fewest remaining values
     best_tile_choice_mrv = None
     for tile in unassigned:
@@ -259,6 +259,7 @@ def main():
     puzzle = Board(startingState1)
     print(puzzle)
     print(puzzle.getByX(9)[8].domain)
+    recursive_backtracking(startingState1)
     startingState2 = [
         "ee5e1eeee",
         "ee2ee4e3e",
