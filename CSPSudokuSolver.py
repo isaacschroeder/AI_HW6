@@ -317,6 +317,7 @@ def main():
         if (selection == 'A' or selection == 'a' or selection == '1'):
             puzzle = Board(startingState1)
             start = time.time()
+            print("\nFirst 4 States:")
             output = recursive_backtracking(puzzle, 0)
             end = time.time()
             print("\n\nSolved Sudoku for Starting State 1:")
@@ -325,6 +326,7 @@ def main():
         elif (selection == 'B' or selection == 'b' or selection == '2'):
             puzzle = Board(startingState2)
             start = time.time()
+            print("\nFirst 4 States:")
             output = recursive_backtracking(puzzle, 0)
             end = time.time()
             print("\n\nSolved Sudoku for Starting State 2:")
@@ -333,6 +335,7 @@ def main():
         elif (selection == 'C' or selection == 'c' or selection == '3'):
             puzzle = Board(startingState3)
             start = time.time()
+            print("\nFirst 4 States:")
             output = recursive_backtracking(puzzle, 0)
             end = time.time()
             print("\n\nSolved Sudoku for Starting State 3:")
