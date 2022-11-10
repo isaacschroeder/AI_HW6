@@ -51,7 +51,7 @@ class Tile:
         return True
 
     def getPosition(self): # -> tuple[int,int]:
-        return (self.x, self.y)
+        return Position(self.x, self.y)
 
     def placeEntry(self) -> int:
         nextValue = min(self.domain)
@@ -272,6 +272,9 @@ def main():
         "eeee7ee5e"
     ]
 
+    puzzle2 = Board(startingState2)
+    print(recursive_backtracking(puzzle2))
+
     startingState3 = [
         "67eeeeeee",
         "e25eeeeee",
@@ -283,6 +286,9 @@ def main():
         "eeeeeee1e",
         "1e6e5ee7e"
     ]
+
+    puzzle3 = Board(startingState2)
+    print(recursive_backtracking(puzzle3))
 
 
 # Call to main
